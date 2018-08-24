@@ -1,0 +1,11 @@
+# MAC internals
+*.DS_Store
+
+# Virtualenvironment folder (python3)
+*venv3/*
+
+# Pytorch intermediate results
+*.pt
+
+# Data folders
+*pytorch/**/data/*
