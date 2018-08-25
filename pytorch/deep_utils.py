@@ -42,7 +42,11 @@ def save_model_epochs(filename = 'intermediate/backup.pt', epochs = 10, debug = 
 			'optimizer': kwargs['optimizer'].state_dict(),
 			}
 			if kwargs['epoch'] % epochs == 0:
-				torch.save(state, filename)
+				try:
+					torch.save(state, filename)
+				except:
+					os.makedirs(filename[:filename.rfind('/')])
+					torch.save(state, filename)
 
 			# returning state
 			return state['epoch'] + 1
@@ -51,3 +55,10 @@ def save_model_epochs(filename = 'intermediate/backup.pt', epochs = 10, debug = 
 		return wrapper
 	return wrapper_outer
 
+
+def l2regularization(model, loss):
+	lambda_ = torch.tensor(1.)
+	l2_reg = torch.tensor(0.)
+	for param in model.parameters():
+	    l2_reg += torch.norm(param)
+	loss += lambda_ * l2_reg

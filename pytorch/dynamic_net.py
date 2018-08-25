@@ -5,7 +5,7 @@ import os
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-from deeputils import save_model_epochs
+from deep_utils import save_model_epochs
 
 class DynamicNet(torch.nn.Module):
 	def __init__(self, D_in, D_H, N_H, D_out):
