@@ -6,6 +6,9 @@ import inspect
 
 # Model Save and Load Epoch-State
 load_model = True
+from graphviz import Digraph
+from torchviz import make_dot
+
 
 def save_model_epochs(filename = 'intermediate/backup.pt', epochs = 10, debug = False):
 	def wrapper_outer(fn):
@@ -50,8 +53,6 @@ def save_model_epochs(filename = 'intermediate/backup.pt', epochs = 10, debug = 
 
 			# returning state
 			return state['epoch'] + 1
-
-
 		return wrapper
 	return wrapper_outer
 
@@ -62,3 +63,12 @@ def l2regularization(model, loss):
 	for param in model.parameters():
 	    l2_reg += torch.norm(param)
 	loss += lambda_ * l2_reg
+
+def showModel(variable):
+	make_dot(variable).view()
+
+# TODO
+# plot train/test accuracy vs epoch
+# plot learning rate vs epoch
+# plot train accuracy vs test accuracy
+

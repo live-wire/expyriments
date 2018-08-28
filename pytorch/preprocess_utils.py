@@ -1,8 +1,14 @@
 import numpy as np
 import pandas as pd
 import torch
+import torch.nn.functional as F
 
 from sklearn.model_selection import train_test_split
+from skimage import io, transform
+from torch.autograd import Variable
+
+def resize2d(img, size):
+    return transform.resize(img, size)
 
 def getCategoricalTensor(y, rows, cols):
 	y_final = torch.zeros(rows, cols)

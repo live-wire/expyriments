@@ -1,0 +1,71 @@
+digraph {
+	graph [size="12,12"]
+	node [align=left fontsize=12 height=0.2 ranksep=0.1 shape=box style=filled]
+	4694007648 [label=MseLossBackward fillcolor=darkolivegreen1]
+	4694521896 -> 4694007648
+	4694521896 [label=ThAddmmBackward]
+	4694521952 -> 4694521896
+	4694521952 [label=ExpandBackward]
+	4694522232 -> 4694521952
+	4694522232 [label="
+ (10)" fillcolor=lightblue]
+	4694522064 -> 4694521896
+	4694522064 [label=ReluBackward]
+	4694522288 -> 4694522064
+	4694522288 [label=ThAddmmBackward]
+	4694522344 -> 4694522288
+	4694522344 [label=ExpandBackward]
+	4694522624 -> 4694522344
+	4694522624 [label="
+ (84)" fillcolor=lightblue]
+	4694522456 -> 4694522288
+	4694522456 [label=ReluBackward]
+	4694522680 -> 4694522456
+	4694522680 [label=ThAddmmBackward]
+	4694522736 -> 4694522680
+	4694522736 [label=ExpandBackward]
+	4694523016 -> 4694522736
+	4694523016 [label="
+ (120)" fillcolor=lightblue]
+	4694522848 -> 4694522680
+	4694522848 [label=ViewBackward]
+	4694523072 -> 4694522848
+	4694523072 [label=MaxPool2DWithIndicesBackward]
+	4694523128 -> 4694523072
+	4694523128 [label=ReluBackward]
+	4694523296 -> 4694523128
+	4694523296 [label=ThnnConv2DBackward]
+	4694523408 -> 4694523296
+	4694523408 [label=MaxPool2DWithIndicesBackward]
+	4694523632 -> 4694523408
+	4694523632 [label=ReluBackward]
+	4694523744 -> 4694523632
+	4694523744 [label=ThnnConv2DBackward]
+	4694523856 -> 4694523744
+	4694523856 [label="
+ (6, 1, 5, 5)" fillcolor=lightblue]
+	4694724680 -> 4694523744
+	4694724680 [label="
+ (6)" fillcolor=lightblue]
+	4694523464 -> 4694523296
+	4694523464 [label="
+ (16, 6, 5, 5)" fillcolor=lightblue]
+	4694523520 -> 4694523296
+	4694523520 [label="
+ (16)" fillcolor=lightblue]
+	4694522904 -> 4694522680
+	4694522904 [label=TBackward]
+	4694523184 -> 4694522904
+	4694523184 [label="
+ (120, 400)" fillcolor=lightblue]
+	4694522512 -> 4694522288
+	4694522512 [label=TBackward]
+	4694522792 -> 4694522512
+	4694522792 [label="
+ (84, 120)" fillcolor=lightblue]
+	4694522120 -> 4694521896
+	4694522120 [label=TBackward]
+	4694522400 -> 4694522120
+	4694522400 [label="
+ (10, 84)" fillcolor=lightblue]
+}

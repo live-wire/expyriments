@@ -52,7 +52,8 @@ def main():
 	# Construct our loss function and an Optimizer. Training this strange model with
 	# vanilla stochastic gradient descent is tough, so we use momentum
 
-	criterion = torch.nn.MSELoss(reduction='sum')
+	# criterion = torch.nn.MSELoss(reduction='sum')
+	criterion = torch.nn.CrossEntropyLoss()
 	# optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
 	optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
@@ -86,8 +87,7 @@ def main():
 		total += y_final.size(0)
 		correct += (predicted == y).sum().item()
 
-	print('Training Accuracy: %f %%' % (
-		100 * correct / total))
+	print('Training Accuracy: %f %%' % (100 * correct / total))
 
 if __name__ == '__main__':
 	main()
