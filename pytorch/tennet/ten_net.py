@@ -14,8 +14,8 @@ import sys
 sys.path.append('..')
 
 from dynamic_net import DynamicNet
-import deep_utils as dutils
-import preprocess_utils as prep
+import utils.deep_utils as dutils
+import utils.preprocess_utils as prep
 
 class TenNet(torch.nn.Module):
 	def __init__(self):
@@ -65,7 +65,7 @@ def main():
 
 	# N, D_in, D_H, N_H, D_out = 1381, 4096, 200, 4, 10
 
-	saved_state_filename = 'intermediate/TenNet.pt'
+	saved_state_filename = 'intermediate/TenNetVis.pt'
 
 
 	# Tensors for the dataset
@@ -73,6 +73,9 @@ def main():
 	y = torch.tensor(y_train).float()
 	x_test = torch.tensor(x_test).float()
 	y_test = torch.tensor(y_test).float()
+
+	# data stores x_train, y_train, x_test, y_test
+	data = x, y, x_test, y_test
 
 
 	# Construct our model by instantiating the class defined above
@@ -85,13 +88,13 @@ def main():
 	optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
 
-	@dutils.save_model_epochs(filename = saved_state_filename, epochs = 10)
-	def iteration(epoch = 1, model = model, optimizer = optimizer):
+	@dutils.save_model_epochs(filename = saved_state_filename, epochs = 10, save_epoch_states = 100, data = data, visualization = True)
+	def iteration(epoch = 1, model = model, optimizer = optimizer, data = data):
 		# Forward pass: Compute predicted y by passing x to the model
 		y_pred = model(x)
 		# Compute and print loss
 		loss = criterion(y_pred, y)
-		dutils.showModel(loss)
+		# dutils.showModel(loss)
 		# dutils.l2regularization(model, loss) # Manually adding a regularizer
 		print('Epoch:', epoch, '|  Loss:', loss.item())
 
@@ -101,7 +104,7 @@ def main():
 		optimizer.step()
 
 	epoch = 1
-	while epoch <= 20:
+	while epoch <= 2000:
 		epoch = iteration(epoch = epoch)
 
 	print('Finished Training')
@@ -116,7 +119,7 @@ def getAccuracy(model, x, y):
 		outputs = model(x)
 		_, predicted = torch.max(outputs, 1)
 		_, actual = torch.max(y, 1)
-		print(outputs.shape, predicted.shape, y.shape, actual.shape)
+		# print(outputs.shape, predicted.shape, y.shape, actual.shape)
 		total += y.size(0)
 		correct += (predicted == actual).sum().item()
 	return 'Accuracy: %f %%' % (100 * correct / total)
