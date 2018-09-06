@@ -89,7 +89,7 @@ def main():
 
 
 	@dutils.save_model_epochs(filename = saved_state_filename, epochs = 10, save_epoch_states = 100, data = data, visualization = True)
-	def iteration(epoch = 1, model = model, optimizer = optimizer, data = data):
+	def iteration(epoch = 1, model = model, optimizer = optimizer, data = data, criterion = criterion):
 		# Forward pass: Compute predicted y by passing x to the model
 		y_pred = model(x)
 		# Compute and print loss

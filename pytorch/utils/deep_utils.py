@@ -17,9 +17,9 @@ visualize = Visualize()
 
 visualization_params_default = {
 	'accuracy_vs_epoch': True,
-	'learningRate_vs_epoch': True,
+	'loss_vs_epoch': True,
 	'testAccuracy_vs_trainAccuracy': True,
-
+	'learningRate_vs_epoch': True
 }
 def save_model_epochs(
 	filename = 'intermediate/backup.pt',
@@ -51,6 +51,7 @@ def save_model_epochs(
 					kwargs['epoch'] = state['epoch']
 					kwargs['model'].load_state_dict(state['state_dict'])
 					kwargs['optimizer'].load_state_dict(state['optimizer'])
+					kwargs['criterion'].load_state_dict(state['criterion'])
 					kwargs['epoch'] = kwargs['epoch'] + 1
 
 			# Calling the actual iteration function
@@ -62,12 +63,13 @@ def save_model_epochs(
 			'epoch': kwargs['epoch'],
 			'state_dict': kwargs['model'].state_dict(),
 			'optimizer': kwargs['optimizer'].state_dict(),
+			'criterion': kwargs['criterion'].state_dict()
 			}
 
 			if kwargs['epoch'] % epochs == 0:
 				saveModelState(state, filename)
 				if visualization:
-					displayVisualizations(data, kwargs['model'], kwargs['epoch'], visualization_params)
+					displayVisualizations(data, kwargs['model'], kwargs['epoch'], kwargs['criterion'], visualization_params)
 			if kwargs['epoch'] % save_epoch_states == 0:
 				saveModelState(state, filename + '_' + 'epoch_' + str(kwargs['epoch']))
 			# returning state
@@ -92,10 +94,14 @@ def l2regularization(model, loss):
 def showModel(variable):
 	make_dot(variable).view()
 
-def displayVisualizations(data, model, epoch, visualization_params):
+def displayVisualizations(data, model, epoch, criterion, visualization_params):
 	global visualize
 	if (visualization_params['accuracy_vs_epoch']):
 		visualize.accuracyVsEpochs(data, model, epoch)
+	if (visualization_params['loss_vs_epoch']):
+		visualize.lossVsEpochs(data, model, epoch, criterion)
+
+	# visualize.showPlots()
 
 def accuracyVsEpoch():
 	pass
@@ -112,7 +118,14 @@ def getAccuracy(model, x, y):
 		total += y.size(0)
 		correct += (predicted == actual).sum().item()
 	return (100 * correct / total)
+
+def getLoss(model, criterion, x, y):
+	loss = torch.tensor(0)
+	with torch.no_grad():
+		y_pred = model(x)
+		loss = criterion(y_pred, y)
+	return loss.item()
 # TODO
-# plot train/test accuracy vs epoch
+# plot train/test loss vs epoch
 # plot learning rate vs epoch
 # plot train accuracy vs test accuracy

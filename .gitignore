@@ -3,9 +3,10 @@
 
 # Virtualenvironment folder (python3)
 **/venv3
-
+**/.idea
 # Pytorch intermediate results
 *.pt
+*_epoch_*
 
 # Data folders
 **/data
