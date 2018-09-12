@@ -40,6 +40,8 @@ Official tutorials [here](https://pytorch.org/tutorials/)
 
 - Visualization Utilities see `utils/vis_utils.py`
 	- Train, Test accuracy % vs epochs
+	- Train vs Test accuracy
+	- Learning rate vs Epochs
 	- Train Loss vs Epochs
 	- Run visualization utilities in a separate window like:
 	```

@@ -69,7 +69,7 @@ def save_model_epochs(
 			if kwargs['epoch'] % epochs == 0:
 				saveModelState(state, filename)
 				if visualization:
-					displayVisualizations(data, kwargs['model'], kwargs['epoch'], kwargs['criterion'], visualization_params)
+					displayVisualizations(data, kwargs['model'], kwargs['epoch'], kwargs['criterion'], kwargs['optimizer'], visualization_params)
 			if kwargs['epoch'] % save_epoch_states == 0:
 				saveModelState(state, filename + '_' + 'epoch_' + str(kwargs['epoch']))
 			# returning state
@@ -94,20 +94,32 @@ def l2regularization(model, loss):
 def showModel(variable):
 	make_dot(variable).view()
 
-def displayVisualizations(data, model, epoch, criterion, visualization_params):
+def displayVisualizations(data, model, epoch, criterion, optimizer, visualization_params):
 	global visualize
 	if (visualization_params['accuracy_vs_epoch']):
 		visualize.accuracyVsEpochs(data, model, epoch)
 	if (visualization_params['loss_vs_epoch']):
 		visualize.lossVsEpochs(data, model, epoch, criterion)
+	if (visualization_params['learningRate_vs_epoch']):
+		visualize.learningRateVsEpochs(optimizer, epoch)
 
 	# visualize.showPlots()
 
-def accuracyVsEpoch():
-	pass
+def getLearningRate(optimizer):
+    lr=[]
+    for param_group in optimizer.param_groups:
+       lr +=[ param_group['lr'] ]
+    return lr
+
+
+def adjustLearningRate(optimizer, lr):
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
 
 
 def getAccuracy(model, x, y):
+	oldstate = model.training
+	model.eval()
 	correct = 0
 	total = 0
 	with torch.no_grad():
@@ -117,6 +129,7 @@ def getAccuracy(model, x, y):
 		print(outputs.shape, predicted.shape, y.shape, actual.shape)
 		total += y.size(0)
 		correct += (predicted == actual).sum().item()
+	model.train(oldstate)
 	return (100 * correct / total)
 
 def getLoss(model, criterion, x, y):
@@ -125,7 +138,5 @@ def getLoss(model, criterion, x, y):
 		y_pred = model(x)
 		loss = criterion(y_pred, y)
 	return loss.item()
-# TODO
-# plot train/test loss vs epoch
+
 # plot learning rate vs epoch
-# plot train accuracy vs test accuracy

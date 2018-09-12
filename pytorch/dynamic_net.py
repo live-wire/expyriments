@@ -26,7 +26,7 @@ class DynamicNet(torch.nn.Module):
 
 def main():	
 	# Fetching Data and Preprocessing
-	from datagen import Spiral
+	from utils.datagen_utils import Spiral
 	resume_execution = True
 	data = Spiral()
 	x, y = data.generate()

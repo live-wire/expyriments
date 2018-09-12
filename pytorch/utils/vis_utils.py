@@ -7,6 +7,8 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib import interactive
+import seaborn as sns
+sns.set()
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -17,7 +19,6 @@ args = parser.parse_args()
 import sys
 sys.path.append('..')
 
-import threading 
 import time
 
 class _Visualize:
@@ -40,7 +41,13 @@ class _Visualize:
 		self.data['train_loss'].append(getLoss(model, criterion, data[0], data[1]))
 		torch.save(self.data, self.filename)
 		# print(self.data['train_loss'], self.data['loss_epochs'])
-		
+
+	def learningRateVsEpochs(self, optimizer, epoch):
+		self.data['learning_epochs'].append(epoch)
+		from utils.deep_utils import getLearningRate
+		self.data['learning_rate'].append(getLearningRate(optimizer)[0])
+		torch.save(self.data, self.filename)
+		# print(self.data['learning_epochs'], self.data['learning_rate'][0])
 
 	def loadData(self):
 		try:
@@ -54,7 +61,10 @@ class _Visualize:
 				'accuracy_epochs': [],
 
 				'train_loss': [],
-				'loss_epochs': []
+				'loss_epochs': [],
+
+				'learning_rate': [],
+				'learning_epochs': []
 			}
 
 	def showPlots(self):
@@ -77,6 +87,26 @@ class _Visualize:
 		plt.pause(0.0001)
 		plt.draw()
 
+		fig = plt.figure(3)
+		fig.clear()
+		plt.plot(self.data['train_accuracy'], self.data['test_accuracy'], label='training vs test', color='red')
+		plt.plot(list(range(0,101)), list(range(0,101)), label='y=x', color='yellow', linestyle='--', dashes=(5, 20))
+		plt.legend()
+		plt.xlabel('Training accuracy')
+		plt.ylabel('Test accuracy')
+		plt.pause(0.0001)
+		plt.draw()
+
+		fig = plt.figure(4)
+		fig.clear()
+		plt.plot(self.data['learning_epochs'], self.data['learning_rate'], label='Learning rate', color='orange')
+		plt.legend()
+		plt.xlabel('Epochs')
+		plt.ylabel('Learning Rate')
+		plt.pause(0.0001)
+		plt.draw()
+
+
 
 def Visualize(filename = 'intermediate/visualization_data.pt'):
 	_visualize = _Visualize(filename)
@@ -98,7 +128,7 @@ if __name__ == '__main__':
 	if args.time:
 		timer = float(args.time)
 	while True:
-		time.sleep(timer)
 		run_check()
+		time.sleep(timer)
 
 

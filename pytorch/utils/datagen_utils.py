@@ -4,12 +4,12 @@ import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import torch
 
 # Spiral Data generator
 # Credits: Andrej Karpathy http://cs231n.github.io/neural-networks-case-study/
 class Spiral:
-	def __init__(self, N=100, D=2, K=3):
-		self.N = N
+	def __init__(self, D=2, K=3):
 		self.D = D
 		self.K = K
 	def generate(self, display=False):
@@ -25,3 +25,11 @@ class Spiral:
 			plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.Spectral)
 			plt.show()
 		return X,y
+
+class Gaussian:
+	def __init__(self, mean, cov, n):
+		self.mean = mean
+		self.cov = cov
+		self.n = n
+	def generate(self):
+		return np.random.normal(self.mean, self.cov, self.n)

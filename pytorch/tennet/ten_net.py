@@ -17,6 +17,9 @@ from dynamic_net import DynamicNet
 import utils.deep_utils as dutils
 import utils.preprocess_utils as prep
 
+torch.backends.cudnn.deterministic = True
+torch.manual_seed(1973)
+
 class TenNet(torch.nn.Module):
 	def __init__(self):
 		super(TenNet, self).__init__()
@@ -40,7 +43,7 @@ class TenNet(torch.nn.Module):
 		x = F.relu(self.fc1(x))
 		x = F.relu(self.fc2(x))
 		x = self.fc3(x)
-		return x
+		return F.dropout(x, p=0, training=self.training)
 
 	def num_flat_features(self, x):
 		size = x.size()[1:]  # all dimensions except the batch dimension
@@ -80,6 +83,7 @@ def main():
 
 	# Construct our model by instantiating the class defined above
 	model = TenNet()
+	model.train()
 	# Construct our loss function and an Optimizer. Training this strange model with
 	# vanilla stochastic gradient descent is tough, so we use momentum
 
@@ -108,6 +112,8 @@ def main():
 		epoch = iteration(epoch = epoch)
 
 	print('Finished Training')
+	model.eval()
+
 	print('Training Accuracy: %s\nTest Accuracy: %s' % (getAccuracy(model, x, y), getAccuracy(model, x_test, y_test)))
 	torch.save(model.state_dict(), 'model.pt')
 
