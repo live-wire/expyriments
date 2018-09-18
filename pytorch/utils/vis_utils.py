@@ -11,10 +11,6 @@ import seaborn as sns
 sns.set()
 
 import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--net', help='Name of the folder that contains your net implementation (and contains intermediate/visualization_data.pt)')
-parser.add_argument('--time', help='Plot update every n seconds')
-args = parser.parse_args()
 
 import sys
 sys.path.append('..')
@@ -54,7 +50,7 @@ class _Visualize:
 			print('Trying to load', self.filename)
 			self.data = torch.load(self.filename)
 		except:
-			print('errored')
+			print('Visualization init from scratch')
 			self.data = {
 				'train_accuracy': [],
 				'test_accuracy': [],
@@ -124,6 +120,10 @@ def run_check():
 	plt.show(block=False)
 
 if __name__ == '__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--net', help='Name of the folder that contains your net implementation (and contains intermediate/visualization_data.pt)')
+	parser.add_argument('--time', help='Plot update every n seconds')
+	args = parser.parse_args()
 	timer = 5
 	if args.time:
 		timer = float(args.time)

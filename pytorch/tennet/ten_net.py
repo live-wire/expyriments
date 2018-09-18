@@ -5,15 +5,10 @@ import torch.nn.functional as F
 
 import numpy as np
 
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-
 # Adding parent folder to path (Python3 workaround)
 import sys
 sys.path.append('..')
 
-from dynamic_net import DynamicNet
 import utils.deep_utils as dutils
 import utils.preprocess_utils as prep
 
@@ -130,8 +125,6 @@ def getAccuracy(model, x, y):
 		correct += (predicted == actual).sum().item()
 	return 'Accuracy: %f %%' % (100 * correct / total)
 
-	# plt.imshow(x[0])
-	# plt.show()
 
 if __name__ == '__main__':
 	main()

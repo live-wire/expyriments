@@ -77,12 +77,21 @@ def save_model_epochs(
 		return wrapper
 	return wrapper_outer
 
+
 def saveModelState(state, filename):
 	try:
 		torch.save(state, filename)
 	except:
 		os.makedirs(filename[:filename.rfind('/')])
 		torch.save(state, filename)
+
+def saveModel(model, optimizer, criterion, filename='model.pt'):
+	state = {
+		'state_dict': model.state_dict(),
+		'optimizer': optimizer.state_dict(),
+		'criterion': criterion.state_dict()
+	}
+	saveModelState(state, filename)
 
 def l2regularization(model, loss):
 	lambda_ = torch.tensor(1.)
