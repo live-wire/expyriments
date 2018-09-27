@@ -7,6 +7,7 @@ This section covers some basic and advanced topics.
 	- Decorators
 	- Thread pool
 	- Argumentparser
+- `threads.py` and `processes.py` contain sample examples for both.
 
 ---
 
