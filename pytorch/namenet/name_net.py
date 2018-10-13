@@ -1,6 +1,4 @@
 # Predict nationality based on name
-import gc
-gc.collect()
 
 import torch
 import torch.nn as nn

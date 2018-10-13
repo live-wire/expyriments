@@ -33,3 +33,17 @@ class Gaussian:
 		self.n = n
 	def generate(self):
 		return np.random.normal(self.mean, self.cov, self.n)
+
+class Sine:
+	def __init__(self, Fs=8000, f = 5, sample = 8000):
+		self.Fs = Fs
+		self.f = f
+		self.sample = sample
+
+	def generate(self, display=False):
+		Fs = self.Fs
+		f = self.f
+		sample = self.sample
+		x = np.arange(sample)
+		y = np.sin(2 * np.pi * f * x / Fs)
+		return x,y

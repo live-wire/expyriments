@@ -10,6 +10,16 @@ from torch.autograd import Variable
 import unicodedata
 import string
 
+import sys
+sys.path.append('..')
+
+from utils.flags import DEBUG_FLAG
+
+def debug(*args, **kwargs):
+    if (DEBUG_FLAG):
+        print(*args,**kwargs)
+
+
 def resize2d(img, size):
     return transform.resize(img, size)
 
@@ -29,6 +39,11 @@ def flattenRows(x):
 	for i, item in enumerate(x):
 		ret.append(item.flatten())
 	return np.array(ret)
+
+def shuffle_together(a, b):
+    assert len(a) == len(b)
+    p = np.random.permutation(len(a))
+    return a[p], b[p]
 
 # Turn a Unicode string to plain ASCII, thanks to http://stackoverflow.com/a/518232/2809427
 all_letters = string.ascii_letters + " .,;'"
