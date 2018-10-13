@@ -3,8 +3,6 @@ import os
 import time
 import re
 
-
-
 class DownloadData(luigi.Task):
 	def output(self):
 		return luigi.LocalTarget("players.csv")
