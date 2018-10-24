@@ -8,6 +8,11 @@ This section covers some basic and advanced topics.
 	- Thread pool
 	- Argumentparser
 - `threads.py` and `processes.py` contain sample examples for both.
+- `videoedit.py` contains utilities for video operations like:
+	- _video flip_
+	- _video crop_
+	- _video grayscale_
+	- _video sample frames_
 
 ---
 
