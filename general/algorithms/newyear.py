@@ -1,4 +1,4 @@
-# new year
+# new year's chaos
 def minimumBribes(q):
     bribes = 0
     for i,item in enumerate(reversed(q)):

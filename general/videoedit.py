@@ -27,6 +27,7 @@ def main():
 	parser.add_argument("--video", help="file path of video to be reversed")
 	parser.add_argument("--fps", help="sample file to this fps")
 	parser.add_argument("--resize", help="resize the samples to this")
+	parser.add_argument("-gray", action="store_true")
 	parser.add_argument("-flip", action="store_true")
 	args = parser.parse_args()
 	if (not args.video):
@@ -52,10 +53,13 @@ def flip(filename):
 	writer.close()
 	return edited_file
 
-def process(filename, args = None, fpsArg = None, resizeArg = None):
+def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True):
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
+	if (not blackWhite):
+		if (args.gray):
+			blackWhite = True
 	if (fpsArg):
 		newfps = fpsArg
 	elif (args.fps):
@@ -83,8 +87,10 @@ def process(filename, args = None, fpsArg = None, resizeArg = None):
 			elif (args.resize):
 				resize = (int(args.resize), int(args.resize))
 				resized_image = cv2.resize(im, resize)
-			black_white = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-			writer.append_data(black_white)
+			return_image = resized_image
+			if (blackWhite):
+				return_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+			writer.append_data(return_image)
 	print("")
 	writer.close()
 	return edited_file
