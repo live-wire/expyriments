@@ -6,7 +6,7 @@ import base64
 app = Flask(__name__)
 from flask import render_template
 from object_net import getPrediction
-
+import random
 cpu = "--"
 
 # @app.route("/")
@@ -27,6 +27,8 @@ def classify():
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.decodebytes(bytes(blah,'utf-8')))
         im = Image.open("imageToSave.png")
+        s = str(random.randint(1,100000))+".png"
+        im.save("collection/"+s)
         # now we need a jpg image from the available png
         # converting png to jpg
         rgb_im = im.convert('RGB')
