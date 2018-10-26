@@ -2,7 +2,6 @@
 Neural Transfer Using PyTorch
 =============================
 
-
 **Author**: `Alexis Jacq <https://alexis-jacq.github.io>`_
  
 **Edited by**: `Winston Herring <https://github.com/winston6>`_
