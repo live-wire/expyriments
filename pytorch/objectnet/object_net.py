@@ -1,8 +1,8 @@
 import torch 
 import numpy as np
-import matplotlib as mpl
-mpl.use("TkAgg")
-import matplotlib.pyplot as plt
+# import matplotlib as mpl
+# mpl.use("TkAgg")
+# import matplotlib.pyplot as plt
 
 import torchvision.models as models
 import torchvision.transforms as transforms
