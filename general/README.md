@@ -13,6 +13,9 @@ This section covers some basic and advanced topics.
 	- _video crop_
 	- _video grayscale_
 	- _video sample frames_
+- `cloud.py` contains sample cloud utilities
+	- Google Cloud Storage upload
+	- Algolia Search Upload index
 
 ---
 
