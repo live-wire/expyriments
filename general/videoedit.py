@@ -53,7 +53,12 @@ def flip(filename):
 	writer.close()
 	return edited_file
 
-def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True):
+def noPrint(*args, **kwargs):
+	pass
+
+def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True, outputFile = None, debug = False):
+	if not debug:
+		print = noPrint
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
@@ -64,7 +69,10 @@ def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite =
 		newfps = fpsArg
 	elif (args.fps):
 		newfps = int(args.fps)
-	edited_file = filename[:filename.find(".")]+"_processed"+filename[filename.find("."):]
+	if outputFile:
+		edited_file = outputFile
+	else:
+		edited_file = filename[:filename.find(".")]+"_processed"+filename[filename.find("."):]
 	print("FILE:", filename, "\nFPS:", fps, "| New FPS:", newfps)
 	print("Video length (frames):", len(vid))
 	print("Video length (seconds):", len(vid)/fps)
@@ -82,7 +90,7 @@ def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite =
 				ptillnow = progress
 			resized_image = im
 			if (resizeArg):
-				resize = resizeArg
+				resize = (int(resizeArg), int(resizeArg))
 				resized_image = cv2.resize(im, resize)
 			elif (args.resize):
 				resize = (int(args.resize), int(args.resize))
