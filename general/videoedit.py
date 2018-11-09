@@ -6,6 +6,7 @@ import sys
 import numpy as np
 import cv2
 import os
+from decorate import noprint
 
 args = None
 # Bresenham's Line equqtion
@@ -53,12 +54,8 @@ def flip(filename):
 	writer.close()
 	return edited_file
 
-def noPrint(*args, **kwargs):
-	pass
-
-def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True, outputFile = None, debug = False):
-	if not debug:
-		print = noPrint
+@noprint
+def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True, outputFile = None):
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
