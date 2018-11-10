@@ -6,7 +6,6 @@ import sys
 import numpy as np
 import cv2
 import os
-from decorate import noprint
 
 args = None
 # Bresenham's Line equqtion
@@ -54,8 +53,11 @@ def flip(filename):
 	writer.close()
 	return edited_file
 
-@noprint
+def noprint(*args, **kwargs):
+	pass
+
 def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True, outputFile = None):
+	print = noprint
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
@@ -79,23 +81,31 @@ def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite =
 	writer = imageio.get_writer(edited_file, fps=newfps)
 	print("---","Writing now","---")
 	ptillnow = 0
-	for i,im in enumerate(vid):
-		if (i in samples):
-			progress = int((i/len(vid))*100)
-			if progress!=ptillnow:
-				print("|====[ "+str(progress)+" % ]", end='\r')
-				ptillnow = progress
-			resized_image = im
-			if (resizeArg):
-				resize = (int(resizeArg), int(resizeArg))
-				resized_image = cv2.resize(im, resize)
-			elif (args.resize):
-				resize = (int(args.resize), int(args.resize))
-				resized_image = cv2.resize(im, resize)
-			return_image = resized_image
-			if (blackWhite):
-				return_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-			writer.append_data(return_image)
+	try:
+		i = 0
+		for im in vid:
+		# for i,im in enumerate(vid):
+			if (i in samples):
+				progress = int((i/len(vid))*100)
+				if progress!=ptillnow:
+					print("|====[ "+str(progress)+" % ]", end='\r')
+					ptillnow = progress
+				resized_image = im
+				if (resizeArg):
+					resize = (int(resizeArg), int(resizeArg))
+					resized_image = cv2.resize(im, resize)
+				elif (args.resize):
+					resize = (int(args.resize), int(args.resize))
+					resized_image = cv2.resize(im, resize)
+				return_image = resized_image
+				if (blackWhite):
+					return_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+				writer.append_data(return_image)
+			i = i + 1
+	except Exception as e:
+		print("[== ERROR processing", filename)
+		with open('error_files', 'a') as fo:
+			fo.write(filename+",\n")
 	print("")
 	writer.close()
 	return edited_file
