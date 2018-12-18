@@ -93,6 +93,15 @@ def saveModel(model, optimizer, criterion, filename='model.pt'):
 	}
 	saveModelState(state, filename)
 
+def loadModel(filename='model.pt'):
+	state = torch.load(filename)
+	# state = {
+	# 	'state_dict': model.state_dict(),
+	# 	'optimizer': optimizer.state_dict(),
+	# 	'criterion': criterion.state_dict()
+	# }
+	return state
+
 def l2regularization(model, loss):
 	lambda_ = torch.tensor(1.)
 	l2_reg = torch.tensor(0.)
