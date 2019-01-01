@@ -15,7 +15,7 @@ itsdangerous==0.24
 Jinja2==2.10
 kiwisolver==1.0.1
 lockfile==0.12.2
-luigi==2.7.6
+luigi==2.8.2
 MarkupSafe==1.0
 matplotlib==2.2.3
 networkx==2.1
