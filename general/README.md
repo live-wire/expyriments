@@ -16,6 +16,10 @@ This section covers some basic and advanced topics.
 - `cloud.py` contains sample cloud utilities
 	- Google Cloud Storage upload
 	- Algolia Search Upload index
+- `elastic.py` playing around with elasticsearch's low level python client
+	- Assumes elasticsearch is running on localhost:9200
+		- `curl http://localhost:9200/`
+
 
 ---
 

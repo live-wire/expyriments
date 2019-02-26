@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import os
 import inspect
+from torchvision.utils import make_grid
+from torchvision.transforms.functional import to_tensor, to_pil_image
 
 # Model Save and Load Epoch-State
 load_model = True
@@ -156,5 +158,11 @@ def getLoss(model, criterion, x, y):
 		y_pred = model(x)
 		loss = criterion(y_pred, y)
 	return loss.item()
+
+def getGridImage(images, nrow = 8):
+	# Expects a list of tensors (images)
+	# nrow is number of images in a row
+	return to_pil_image(make_grid(images, padding=1, pad_value=1, nrow = nrow, normalize=True))
+
 
 # plot learning rate vs epoch
