@@ -12,7 +12,7 @@ httpie==0.9.9
 idna==2.7
 imageio==2.4.1
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.10.1
 kiwisolver==1.0.1
 lockfile==0.12.2
 luigi==2.8.2
