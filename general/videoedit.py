@@ -61,9 +61,8 @@ def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite =
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
-	if (not blackWhite):
-		if (args.gray):
-			blackWhite = True
+	if (not blackWhite) or (args and args.gray):
+		blackWhite = True
 	if (fpsArg):
 		newfps = fpsArg
 	elif (args.fps):
