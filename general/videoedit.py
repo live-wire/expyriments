@@ -56,12 +56,12 @@ def flip(filename):
 def noprint(*args, **kwargs):
 	pass
 
-def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = True, outputFile = None):
+def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite = False, outputFile = None):
 	print = noprint
 	vid = imageio.get_reader(filename, 'ffmpeg')
 	fps = vid.get_meta_data()['fps']
 	newfps = fps
-	if (not blackWhite) or (args and args.gray):
+	if (blackWhite) or (args and args.gray):
 		blackWhite = True
 	if (fpsArg):
 		newfps = fpsArg
@@ -90,19 +90,22 @@ def process(filename, args = None, fpsArg = None, resizeArg = None, blackWhite =
 					print("|====[ "+str(progress)+" % ]", end='\r')
 					ptillnow = progress
 				resized_image = im
-				if (resizeArg):
-					resize = (int(resizeArg), int(resizeArg))
-					resized_image = cv2.resize(im, resize)
-				elif (args.resize):
-					resize = (int(args.resize), int(args.resize))
+				if (resizeArg) or (args is not None and args.resize):
+					if args and args.resize is not None:
+						rsz = int(args.resize)
+					else:
+						rsz = int(resizeArg)
+					resize = (rsz, rsz)
 					resized_image = cv2.resize(im, resize)
 				return_image = resized_image
+				print("RSZ-SHAPE", return_image.shape)
 				if (blackWhite):
 					return_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+				print("RET_SHAPE:", return_image.shape)
 				writer.append_data(return_image)
 			i = i + 1
 	except Exception as e:
-		print("[== ERROR processing", filename)
+		print("[== ERROR processing", filename, e)
 		with open('error_files', 'a') as fo:
 			fo.write(filename+",\n")
 	print("")
